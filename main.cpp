@@ -170,14 +170,49 @@ class Graduate : public Student
 {
 	string diploma_theme;
 
+public:
+	const string& get_diploma_theme()const
+	{
+		return this->diploma_theme;
+	}
+
+	void set_diploma_theme(const string& speciality)
+	{
+		this->diploma_theme = speciality;
+	}
+
+
+
+	Graduate(
+		const string& first_name, const string& last_name, unsigned int age, 
+		const string& speciality,  const string& group, unsigned int year,unsigned int rating, 
+		const string& diploma_theme)
+		:Student(first_name, last_name, age, speciality, group, year, rating), diploma_theme(diploma_theme)
+		{
+			cout << "GConstructor:\t" << this << endl;
+		}
+
+		~Graduate()
+		{
+			cout << "GDestructor:\t" << this << endl;
+		}
+		void info()
+		{
+			Student::info();
+			cout <<"Тема дипломного проекта"<< diploma_theme  << endl;
+		}
+	
 };
+
 void main()
 {
 	setlocale(LC_ALL, "");
 	Human h("Василий", "Дурко", 21);
 	h.info();
-	Student s("Игорь", "Васильев", 19,"повар","СТ ПУ 34а",1,0);
+	Student s("Игорь", "Васильев", 19, "повар", "СТ ПУ 34а", 1, 0);
 	s.info();
-	Teacher t("Андрей","Анатольевич",41,"Программирование",20,3);
+	Teacher t("Андрей", "Анатольевич", 41, "Программирование", 20, 3);
 	t.info();
+	Graduate g("Андрей", "Анатольевич", 41, "Программирование", "STU 34a", 3,1," Новые мышки");
+	g.info();
 }
