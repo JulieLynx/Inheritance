@@ -42,12 +42,12 @@ public:
 		cout << "HConstructor:\t" << this << endl;
 	}
 
-	~Human()
+virtual	~Human()
 	{
 		cout << "HDestructor:\t" << this << endl;
 	}
 
-	void info()
+	virtual void info()
 	{
 		cout << last_name << " " << first_name << " " << age << "let.\n";
 	}
@@ -83,7 +83,7 @@ public:
 	}
 	void set_year(unsigned int year)
 	{
-		this->year= year;
+		this->year = year;
 	}
 	void set_group(unsigned int group)
 	{
@@ -91,10 +91,10 @@ public:
 	}
 	void set_rating(unsigned int rating)
 	{
-		this->rating= rating;
+		this->rating = rating;
 	}
 
-	Student(const string& first_name, const string& last_name, unsigned int age,const string& speciality, const string&  group, unsigned int year, unsigned int rating) :Human(first_name,last_name,age)
+	Student(const string& first_name, const string& last_name, unsigned int age, const string& speciality, const string&  group, unsigned int year, unsigned int rating) :Human(first_name, last_name, age)
 	{
 		this->speciality = speciality;
 		this->year = year;
@@ -145,7 +145,7 @@ public:
 	{
 		this->expirience = expirience;
 	}
-	
+
 
 	Teacher(const string& first_name, const string& last_name, unsigned int age, const string& speciality, unsigned int year, unsigned int experience) :Human(first_name, last_name, age)
 	{
@@ -159,10 +159,10 @@ public:
 	{
 		cout << "TDestructor:\t" << this << endl;
 	}
-	void info()
+	virtual void info()
 	{
 		Human::info();
-		cout << speciality << " " << expirience << " лет" << year << " лет"<< endl;
+		cout << speciality << " " << expirience << " лет" << year << " лет" << endl;
 	}
 };
 
@@ -184,35 +184,63 @@ public:
 
 
 	Graduate(
-		const string& first_name, const string& last_name, unsigned int age, 
-		const string& speciality,  const string& group, unsigned int year,unsigned int rating, 
+		const string& first_name, const string& last_name, unsigned int age,
+		const string& speciality, const string& group, unsigned int year, unsigned int rating,
 		const string& diploma_theme)
 		:Student(first_name, last_name, age, speciality, group, year, rating), diploma_theme(diploma_theme)
-		{
-			cout << "GConstructor:\t" << this << endl;
-		}
+	{
+		cout << "GConstructor:\t" << this << endl;
+	}
 
-		~Graduate()
-		{
-			cout << "GDestructor:\t" << this << endl;
-		}
-		void info()
-		{
-			Student::info();
-			cout <<"Тема дипломного проекта"<< diploma_theme  << endl;
-		}
-	
+	~Graduate()
+	{
+		cout << "GDestructor:\t" << this << endl;
+	}
+	void info()
+	{
+		Student::info();
+		cout << "Тема дипломного проекта" << diploma_theme << endl;
+	}
+
 };
 
 void main()
 {
 	setlocale(LC_ALL, "");
-	Human h("Василий", "Дурко", 21);
-	h.info();
-	Student s("Игорь", "Васильев", 19, "повар", "СТ ПУ 34а", 1, 0);
-	s.info();
-	Teacher t("Андрей", "Анатольевич", 41, "Программирование", 20, 3);
-	t.info();
-	Graduate g("Андрей", "Анатольевич", 41, "Программирование", "STU 34a", 3,1," Новые мышки");
-	g.info();
+	//Human h("Василий", "Дурко", 21);
+	//h.info();
+	//Student s("Игорь", "Васильев", 19, "повар", "СТ ПУ 34а", 1, 0);
+	//s.info();
+	//Teacher Andrey("Андрей", "Анатольевич", 41, "Программирование", 20, 3);
+	//Graduate Anatolievich("Андрей", "Анатольевич", 41, "Программирование",
+	//	"STU 34a", 3,1," Новые мышки");
+	//Human* pAnd = &Andrey;
+	//Human* pAna = &Anatolievich;
+	//cout << "\n\\\\\\\\\\\\\\\\\\\\\\\\\n";
+	//pAnd->info();
+	////Human(*pAnd).info();
+	//cout << "\n\\\\\\\\\\\\\\\\\\\\\\\\\n";
+
+	Human*group[] =
+	{
+		new Graduate("Виталий","Гавриш",20,"РПО","СТ ПУ 34а",1,100,"Самообучение ИИ +ы и -ы"),
+		new Student("Юлия","Рыбакова",18,"РПО","СТ ПУ 34а",1,70),
+		new Teacher("Андрей","Кобылинский",40,"HardwarePC",18,1),
+		new Student("Евгений","Ковтун",18,"РПО","СТ ПУ 34а", 1, 70),
+		new Graduate("Мариванна","Забрянская",17,"РПО","СТ ПУ 34а",1,80,
+			"Как разработать свою игру, чтобы тебя хоть кт-то заметил"),
+		new Teacher("Роман","Шерстюк",33,"WebDev",5,1)
+	};
+
+	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
+	{
+		cout << "\n---------------------------------\n";
+		cout << typeid(*group[i]).name() << endl;
+		//group[i]->info();
+		cout << *group[i] << endl;
+	}
+	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
+	{
+		delete group[i];
+	}
 }
