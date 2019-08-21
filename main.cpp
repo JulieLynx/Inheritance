@@ -41,7 +41,7 @@ public:
 		set_age(age);
 		cout << "HConstructor:\t" << this << endl;
 	}
-
+	
 virtual	~Human()
 	{
 		cout << "HDestructor:\t" << this << endl;
@@ -51,7 +51,7 @@ virtual	~Human()
 	{
 		cout << last_name << " " << first_name << " " << age << "let.\n";
 	}
-
+	/*virtual void some_metod = 0;*/
 };
 class Student : public Human
 {
@@ -112,6 +112,10 @@ public:
 		Human::info();
 		cout << speciality << " " << group << " " << year << " kurs,rating " << rating << endl;
 	}
+	void some_method()
+	{
+		cout << "chto to dlya prilichiya" << endl;
+	}
 };
 class Teacher : public Human
 {
@@ -164,6 +168,10 @@ public:
 		Human::info();
 		cout << speciality << " " << expirience << " лет" << year << " лет" << endl;
 	}
+	void some_method()
+	{
+		cout << "chto to dlya prilichiya" << endl;
+	}
 };
 
 class Graduate : public Student
@@ -201,9 +209,32 @@ public:
 		Student::info();
 		cout << "Тема дипломного проекта" << diploma_theme << endl;
 	}
-
+	
 };
 
+ostream& operator<<(ostream& os, const Human& obj)
+{
+	os << obj.get_last_name() << " " << obj.get_first_name() << " " << obj.get_age() << "let.\n";
+	return os;
+}
+ostream& operator<<(ostream& os, const Student& obj)
+{
+	os << (Human&)obj;
+	os << obj.get_last_name() << " " << obj.get_first_name() << " " << obj.get_age() << "let.\n";
+	return os;
+}
+ostream& operator<<(ostream& os, const Teacher& obj)
+{
+	os << (Human&)obj;
+	os<< obj.get_speciality() << " " << obj.get_expirience() << " лет" << obj.get_year() << " лет" << endl;
+	return os;
+}
+ostream& operator<<(ostream& os, const Graduate& obj)
+{
+	os << (Student&)obj << endl;;
+	os << "Тема дипломного проекта: " << obj.get_diploma_theme();
+	return os;
+}
 void main()
 {
 	setlocale(LC_ALL, "");
@@ -235,12 +266,23 @@ void main()
 	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
 	{
 		cout << "\n---------------------------------\n";
-		cout << typeid(*group[i]).name() << endl;
+	
+		if (typeid(*group[i]) == typeid(Student))
+			cout << *dynamic_cast<Student*>(group[i]) << endl;
+
+		if (typeid(*group[i]) == typeid(Graduate))
+			cout << *dynamic_cast<Graduate*>(group[i]) << endl;
+
+		if (typeid(*group[i]) == typeid(Teacher))
+			cout<<*dynamic_cast<Teacher*>(group[i]) << endl;
+
+
 		//group[i]->info();
-		cout << *group[i] << endl;
+		//cout << *group[i] << endl;
 	}
 	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
 	{
 		delete group[i];
 	}
+	
 }
